@@ -1,5 +1,6 @@
-import { Box, Button, Flex, Input } from "@chakra-ui/react";
-import React, { useState } from "react";
+import { Box, Button, Flex, Input, IconButton } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
+import { DeleteIcon } from "@chakra-ui/icons";
 
 export default function E() {
   const [arr, setArr] = useState(["떡볶이", "순대", "튀김", "어묵"]);
@@ -8,12 +9,16 @@ export default function E() {
   function handleAddNames(option) {
     if (option === "") {
       alert("값을 입력해 주세요!");
-    } else if (arr.length === 0) {
-      setArr([option]);
     } else {
-      setArr([...arr, "," + option]);
+      setArr([...arr, option]);
     }
   }
+
+  const deleteNthValue = (n) => {
+    const newArr = [...arr];
+    newArr.splice(n, 1);
+    setArr(newArr);
+  };
 
   return (
     <Box bgColor={"purple.200"} mt={"20px"}>
@@ -41,9 +46,24 @@ export default function E() {
         </Button>
       </Flex>
       {arr.map((v, i) => (
-        <Box mt={"10px"}>
+        <Box mt={"10px"} key={i}>
           <Flex justifyContent={"center"} alignItems={"center"}>
-            <li key={i}>{v}</li>
+            <li key={i}>
+              {v}
+              <IconButton
+                ml="10px"
+                onClick={() => {
+                  deleteNthValue(i);
+                }}
+                icon={<DeleteIcon />}
+                size={"sm"}
+                
+              >
+                삭제
+              </IconButton>
+              {/* https://chakra-ui.com/docs/components/icon/usage */}
+              {/* https://chakra-ui.com/docs/components/icon-button/usage */}
+            </li>
           </Flex>
         </Box>
       ))}
